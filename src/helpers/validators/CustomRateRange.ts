@@ -3,7 +3,7 @@ import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments 
 @ValidatorConstraint({ name: 'customRange', async: false })
 export class CustomRateRange implements ValidatorConstraintInterface {
     validate(rate: number, args: ValidationArguments) {
-        return rate > 1 && rate <= 10;
+        return rate >= 1 && rate <= 10;
     }
 
   defaultMessage(args: ValidationArguments) {

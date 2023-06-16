@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { FoodDto } from 'src/dto/food.dto';
 import { Food } from 'src/schemas/food.schema';
 
@@ -22,5 +22,23 @@ export class FoodService {
         const dishes = await this.foodModel.find();
 
         return dishes;
+    }
+
+    async updateDish(dishId: string, dish: FoodDto) {
+        const editedDish = await this.foodModel.findByIdAndUpdate(dishId, dish, {
+            new: true,
+        });
+
+        if (!editedDish) {
+            throw new NotFoundException(`Dish #${dishId} not found`);
+        }
+
+        return editedDish;
+    }
+
+    async deleteDish(dishId: string) {
+        const deleteDish = await this.foodModel.findByIdAndDelete(dishId);
+
+        return deleteDish;
     }
 }
